@@ -1,0 +1,39 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql-container
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: automation4
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - my-network
+
+
+  backend:
+    build: ./.
+    container_name: backend-container
+    restart: on-failure
+    ports:
+      - "9082:9082"
+    environment:
+      DB_HOST: db
+      MYSQL_ROOT_PASSWORD: Root@123
+      MYSQL_DATABASE: automation
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/automation4?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
