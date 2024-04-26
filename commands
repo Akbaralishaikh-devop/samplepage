@@ -1,0 +1,15 @@
+sed -i 's/localhost/13.126.31.111/' *
+
+mvn clean install -Dmaven.test.skip=true
+
+  maven 
+wget https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+tar xzf apache-maven-3.9.6-bin.tar.gz
+sudo mv apache-maven-3.9.6 /usr/local
+
+export M2_HOME=/usr/local/apache-maven-3.9.6
+export M2=$M2_HOME/bin
+export PATH=$M2:$PATH
+source ~/.bashrc
+
+  grep -r "localhost"
